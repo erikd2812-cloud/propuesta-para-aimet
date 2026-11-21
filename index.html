@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09030d">
+<meta name="description" content="Una experiencia especial preparada para Aimet.">
+<title>Una pregunta para Aimet</title>
+<style>
+:root{color-scheme:dark;--pink:#ff70c8;--hot:#ff2d9b;--mag:#d52cff;--red:#ff456f;--ink:#09030d;--muted:#d9b8d0}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--ink);font-family:ui-rounded,"SF Pro Display",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#fff}
+body{min-height:100svh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 42%,#35102d 0,#16091c 35%,#09030d 76%);-webkit-tap-highlight-color:transparent}
+#space{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,#050208aa 100%)}
+.app{position:relative;z-index:2;min-height:100svh;display:grid;place-items:center;padding:28px 20px calc(28px + env(safe-area-inset-bottom))}
+.screen{width:min(100%,540px);text-align:center;display:none;animation:arrive .9s cubic-bezier(.2,.75,.25,1) both}
+.screen.active{display:block}
+@keyframes arrive{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+.preview-tag{position:fixed;z-index:5;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:7px 12px;border:1px solid #ff70c855;border-radius:99px;background:#160a1dcc;color:#ffc4e8;font-size:10px;letter-spacing:.17em;text-transform:uppercase;backdrop-filter:blur(12px);white-space:nowrap}
+.eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#f7a6dc;margin:0 0 17px}
+h1,h2,p{margin-top:0}h1{font-size:clamp(35px,9vw,62px);line-height:1.02;letter-spacing:-.045em;margin-bottom:17px;text-shadow:0 0 24px #ff3cac66}
+h2{font-size:clamp(28px,7vw,43px);line-height:1.12;letter-spacing:-.035em;margin-bottom:18px}
+p{font-size:clamp(15px,4vw,18px);line-height:1.75;color:var(--muted);max-width:440px;margin:0 auto 25px}
+.name{background:linear-gradient(100deg,#fff 5%,#ffb5e4 42%,#ff56b7 72%,#dca0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.heart-wrap{width:min(62vw,270px);aspect-ratio:1;margin:0 auto 28px;position:relative;display:grid;place-items:center}
+.heart-wrap:before,.heart-wrap:after{content:"";position:absolute;inset:12%;border:1px solid #ff5dbb55;border-radius:50%;box-shadow:0 0 28px #ff3cac33,inset 0 0 24px #ff3cac22;animation:orbit 8s linear infinite}
+.heart-wrap:after{inset:0;border-color:#d83cff44;animation-duration:13s;animation-direction:reverse}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.heart{font-size:clamp(105px,28vw,170px);line-height:1;filter:drop-shadow(0 0 12px #ff399e) drop-shadow(0 0 32px #c52dff);animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(.96);filter:drop-shadow(0 0 12px #ff399e) drop-shadow(0 0 28px #c52dff)}50%{transform:scale(1.06);filter:drop-shadow(0 0 20px #ff399e) drop-shadow(0 0 48px #c52dff)}}
+.actions{display:flex;flex-direction:column;gap:12px;width:min(100%,350px);margin:28px auto 0}
+button{appearance:none;border:0;min-height:54px;border-radius:16px;padding:15px 22px;font:700 14px/1.2 inherit;letter-spacing:.08em;cursor:pointer;color:#fff;touch-action:manipulation;transition:transform .2s,filter .2s,box-shadow .2s}
+button:active{transform:scale(.975)}
+.primary{background:linear-gradient(100deg,#ff4eae,#dc32c5 55%,#a943ff);box-shadow:0 0 25px #ed36b955,0 8px 28px #0006}
+.secondary{background:#ffffff0b;border:1px solid #ff9bd455;color:#ffd4ed;backdrop-filter:blur(10px)}
+.small-note{font-size:11px;letter-spacing:.04em;color:#b98eaf;margin-top:19px}
+.line{height:1px;width:74px;margin:22px auto;background:linear-gradient(90deg,transparent,#ff73c9,transparent);box-shadow:0 0 12px #ff50bd}
+.choice{min-height:58px;font-size:13px}
+.result-mark{font-size:70px;filter:drop-shadow(0 0 24px #ff45ad);margin-bottom:12px}
+.result-copy{font-size:clamp(16px,4.5vw,19px)}
+.fade{animation:arrive 1s both}
+.footer{position:fixed;z-index:3;bottom:calc(10px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:10px;letter-spacing:.16em;color:#b98eaf88;pointer-events:none}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+@media(min-width:700px){.app{padding-top:58px;padding-bottom:58px}.actions{flex-direction:row}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<canvas id="space" aria-hidden="true"></canvas><div class="vignette"></div>
+<div class="preview-tag">Vista de prueba · respuestas simuladas</div>
+<main class="app">
+<section class="screen active" id="s0">
+ <div class="heart-wrap"><div class="heart" aria-hidden="true">♡</div></div>
+ <p class="eyebrow">Una pequeña sorpresa</p>
+ <h1>Hay algo que<br><span class="name">quiero contarte...</span></h1>
+ <p>Preparé este pequeño momento pensando en ti.</p>
+ <div class="actions"><button class="primary" data-next="s1">DESCUBRIR <span aria-hidden="true">✦</span></button></div>
+ <div class="small-note">Tómate tu tiempo · No hay prisa</div>
+</section>
+<section class="screen" id="s1">
+ <p class="eyebrow">Antes de continuar</p><div class="line"></div>
+ <h2>Hay encuentros que llegan sin hacer ruido...</h2>
+ <p>Y, sin darte cuenta, una persona empieza a convertirse en alguien con quien te gustaría compartir más momentos.</p>
+ <div class="actions"><button class="primary" data-next="s2">CONTINUAR</button></div>
+</section>
+<section class="screen" id="s2">
+ <div class="heart-wrap"><div class="heart" aria-hidden="true">♡</div></div>
+ <h2>Hay palabras que merecen un momento especial.</h2>
+ <p>Por eso quise preparar algo distinto, algo sencillo y sincero, solo para ti.</p>
+ <div class="actions"><button class="primary" data-next="s3">SEGUIR</button></div>
+</section>
+<section class="screen" id="s3">
+ <p class="eyebrow">Un momento para ti</p><div class="line"></div>
+ <h2>Y ahora sí...</h2>
+ <p>Quiero hacerte una pregunta. La respuesta es tuya, y quiero que la sientas completamente libre.</p>
+ <div class="actions"><button class="primary" data-next="s4">VER LA PREGUNTA</button></div>
+</section>
+<section class="screen" id="s4">
+ <div class="heart-wrap"><div class="heart" aria-hidden="true">♥</div></div>
+ <p class="eyebrow">Aimet</p>
+ <h2>¿Quieres ser mi novia?</h2>
+ <p>Me gustaría comenzar una historia bonita contigo, paso a paso y con sinceridad. ❤️</p>
+ <div class="actions">
+  <button class="primary choice" data-answer="yes">SÍ, QUIERO 💗</button>
+  <button class="secondary choice" data-answer="think">NECESITO PENSARLO</button>
+ </div>
+ <div class="small-note">Cualquiera que sea tu respuesta, será respetada.</div>
+</section>
+<section class="screen" id="yes">
+ <div class="result-mark">💖</div><p class="eyebrow">Un nuevo comienzo</p>
+ <h2>Entonces...<br><span class="name">comencemos esta historia.</span></h2>
+ <p class="result-copy">Gracias por darme la oportunidad de descubrir contigo todo lo bonito que puede venir. Un paso a la vez. ❤️</p>
+ <div class="line"></div><div class="small-note">Este momento merece recordarse.</div>
+ <button class="secondary" data-restart>VOLVER A VER LA EXPERIENCIA</button>
+</section>
+<section class="screen" id="think">
+ <div class="result-mark">♡</div><p class="eyebrow">Gracias por tu sinceridad</p>
+ <h2>No hay prisa, Aimet.</h2>
+ <p class="result-copy">Tómate el tiempo que necesites. Lo importante es que puedas decidir con tranquilidad y siendo fiel a lo que sientes.</p>
+ <div class="line"></div><div class="small-note">Gracias por escuchar lo que quería decirte.</div>
+ <button class="secondary" data-restart>VOLVER A VER LA EXPERIENCIA</button>
+</section>
+</main>
+<div class="footer">HECHO CON CARIÑO · PARA AIMET</div>
+<script>
+(()=> {
+ const demo=true;
+ const canvas=document.getElementById('space'),ctx=canvas.getContext('2d');
+ let w=0,h=0,dpr=1,particles=[],raf=0;
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function resize(){dpr=Math.min(window.devicePixelRatio||1,1.6);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const count=Math.min(75,Math.max(28,Math.floor(w*h/11500)));particles=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,v:Math.random()*.32+.08,a:Math.random()*.55+.15,phase:Math.random()*6.28,heart:Math.random()<.16}));}
+ function draw(t){ctx.clearRect(0,0,w,h);for(const p of particles){p.y-=p.v;if(p.y<-12){p.y=h+12;p.x=Math.random()*w}const alpha=p.a*(.65+.35*Math.sin(t*.001+p.phase));ctx.globalAlpha=alpha;ctx.fillStyle=p.heart?'#ff72c8':'#f7b5e8';if(p.heart){ctx.font=(p.r*5+5)+'px sans-serif';ctx.fillText('♥',p.x,p.y)}else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}}ctx.globalAlpha=1;if(!reduce)raf=requestAnimationFrame(draw)}
+ function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});}
+ document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.next)));
+ document.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(!demo)return;show(b.dataset.answer==='yes'?'yes':'think');}));
+ document.querySelectorAll('[data-restart]').forEach(b=>b.addEventListener('click',()=>show('s0')));
+ addEventListener('resize',resize,{passive:true});resize();if(!reduce)raf=requestAnimationFrame(draw);else draw(0);
+ // PREVIEW ONLY: no response is sent, stored, or exposed to an administrator.
+})();
+</script>
+</body>
+</html>
