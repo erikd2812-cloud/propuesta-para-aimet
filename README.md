@@ -35,6 +35,8 @@ La herramienta de configuración genera los hashes en el navegador y no transmit
 ## Experiencia
 
 - Interfaz responsive para iPhone y Android.
+- La experiencia de Aimet conserva la estética romántica de neón y partículas.
+- El panel del propietario y el configurador de contraseñas usan una interfaz minimalista, sin partículas ni animaciones decorativas; la animación de fondo se pausa mientras el panel está abierto.
 - Paleta de neón rosa, fucsia, magenta y rojo.
 - Partículas animadas, sin música ni efectos de sonido.
 - Recorrido breve con dos posibles respuestas y un mensaje respetuoso en ambos casos.
