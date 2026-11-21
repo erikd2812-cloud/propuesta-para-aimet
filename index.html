@@ -90,6 +90,7 @@ body.admin-mode .footer{display:none}
 </head>
 <body>
 <canvas id="space" aria-hidden="true"></canvas><div class="vignette"></div>
+<button id="logoutSession" class="secondary" style="display:none;position:fixed;z-index:7;top:calc(14px + env(safe-area-inset-top));right:14px;min-height:40px;padding:10px 13px;font-size:10px">CERRAR SESIÓN</button>
 <button id="backToAdmin" class="secondary" style="display:none;position:fixed;z-index:6;top:calc(14px + env(safe-area-inset-top));left:14px;min-height:40px;padding:10px 13px;font-size:10px">VOLVER AL PANEL</button>
 <main class="app">
 <section class="screen active" id="login">
@@ -207,7 +208,7 @@ body.admin-mode .footer{display:none}
   if(!response.ok)throw new Error(result.error||"No se pudo completar la operación.");
   return result;
  }
- function show(id){document.body.classList.toggle("admin-mode",id==="admin");document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.getElementById("backToAdmin").style.display=previewMode&&id!=="admin"&&id!=="login"?"block":"none";if(id!=="admin"&&!reduce)requestAnimationFrame(draw);window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});}
+ function show(id){document.body.classList.toggle("admin-mode",id==="admin");document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.getElementById("backToAdmin").style.display=previewMode&&id!=="admin"&&id!=="login"?"block":"none";document.getElementById("logoutSession").style.display=role&&id!=="login"?"block":"none";if(id!=="admin"&&!reduce)requestAnimationFrame(draw);window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});}
  function setError(id,message){document.getElementById(id).textContent=message||""}
  function startExperience(){previewMode=role==="owner";show("s0")}
  async function enterSession(sessionRole){
@@ -246,6 +247,7 @@ body.admin-mode .footer{display:none}
  document.querySelectorAll("[data-restart]").forEach(button=>button.addEventListener("click",()=>show("s0")));
  document.getElementById("refreshResponses").addEventListener("click",loadResponses);
  document.getElementById("logoutAdmin").addEventListener("click",logout);
+ document.getElementById("logoutSession").addEventListener("click",logout);
  async function logout(){try{await api("logout")}catch{}clearToken();role=null;previewMode=false;show("login")}
  document.getElementById("previewExperience").addEventListener("click",startExperience);
  document.getElementById("backToAdmin").addEventListener("click",()=>{previewMode=false;loadResponses();show("admin")});
