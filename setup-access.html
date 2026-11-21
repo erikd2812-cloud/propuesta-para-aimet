@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#09030d">
+<title>Configurar accesos · Propuesta para Aimet</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:28px 16px;background:radial-gradient(ellipse at 50% 10%,#35102d,#09030d 70%);color:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;place-items:center}.card{width:min(100%,560px);padding:26px;border:1px solid #ff83ce55;border-radius:22px;background:#160b1bea;box-shadow:0 20px 70px #0008}h1{font-size:25px;margin:0 0 8px}.sub,.note{color:#d9b8d0;font-size:13px;line-height:1.65}.field{display:block;width:100%;margin:9px 0 15px;padding:14px;border:1px solid #ff9bd455;border-radius:12px;background:#09030d;color:#fff;font-size:16px}.label{font-size:11px;letter-spacing:.1em;color:#f7a6dc}.btn{width:100%;padding:15px;border:0;border-radius:13px;background:linear-gradient(100deg,#ff4eae,#a943ff);color:white;font-weight:800;letter-spacing:.08em}.output{width:100%;min-height:220px;margin-top:16px;padding:14px;border:1px solid #ff9bd455;border-radius:12px;background:#09030d;color:#f8d8eb;font:12px/1.6 ui-monospace,monospace;overflow-wrap:anywhere}.status{min-height:24px;color:#ffc4e8;font-size:13px;margin-top:12px}.warning{border-left:3px solid #ff70c8;padding:10px 12px;background:#ff70c810;margin:18px 0}.hidden{display:none}
+</style>
+</head>
+<body>
+<main class="card">
+ <h1>Configurar las dos contraseñas</h1>
+ <p class="sub">Herramienta local de configuración inicial. Las contraseñas se procesan en este navegador con PBKDF2-SHA-256. No se envían a ningún servidor ni se guardan en esta página.</p>
+ <div class="warning note">Elige dos contraseñas diferentes, de al menos 12 caracteres. La de Aimet la estableces tú y se la entregas. Solo tú podrás cambiar cualquiera de las dos desde el panel privado.</div>
+ <form id="form">
+  <label class="label" for="aimet">CONTRASEÑA PARA AIMET</label>
+  <input class="field" id="aimet" type="password" minlength="12" maxlength="256" autocomplete="new-password" required>
+  <label class="label" for="owner">TU CONTRASEÑA DE PROPIETARIO</label>
+  <input class="field" id="owner" type="password" minlength="12" maxlength="256" autocomplete="new-password" required>
+  <label class="label" for="owner2">CONFIRMA TU CONTRASEÑA</label>
+  <input class="field" id="owner2" type="password" minlength="12" maxlength="256" autocomplete="new-password" required>
+  <button class="btn" id="generate" type="submit">GENERAR CONFIGURACIÓN SEGURA</button>
+ </form>
+ <div class="status" id="status" role="status"></div>
+ <textarea class="output hidden" id="sql" readonly spellcheck="false"></textarea>
+ <button class="btn hidden" id="copy" type="button" style="margin-top:10px">COPIAR SQL</button>
+ <p class="note">Después de generar el código, abre el SQL Editor de tu proyecto Supabase, pega el SQL y ejecútalo. El texto contiene únicamente hashes y sales aleatorias, no las contraseñas originales. No compartas el SQL ni una captura del resultado.</p>
+</main>
+<script>
+const enc=new TextEncoder();
+const b64url=b=>btoa(String.fromCharCode(...b)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/g,"");
+async function hashPassword(password,salt){
+ const key=await crypto.subtle.importKey("raw",enc.encode(password),"PBKDF2",false,["deriveBits"]);
+ const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(salt),iterations:310000,hash:"SHA-256"},key,256);
+ return Array.from(new Uint8Array(bits),v=>v.toString(16).padStart(2,"0")).join("");
+}
+document.getElementById("form").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const a=document.getElementById("aimet").value,o=document.getElementById("owner").value,o2=document.getElementById("owner2").value;
+ const status=document.getElementById("status"),button=document.getElementById("generate");
+ status.textContent="";
+ if(a.length<12||o.length<12){status.textContent="Cada contraseña debe tener al menos 12 caracteres.";return}
+ if(o!==o2){status.textContent="La confirmación de tu contraseña no coincide.";return}
+ if(a===o){status.textContent="Las dos contraseñas deben ser diferentes.";return}
+ button.disabled=true;button.textContent="GENERANDO...";
+ try{
+  const saltA=b64url(crypto.getRandomValues(new Uint8Array(16))),saltO=b64url(crypto.getRandomValues(new Uint8Array(16)));
+  const [hashA,hashO]=await Promise.all([hashPassword(a,saltA),hashPassword(o,saltO)]);
+  const sql="insert into public.proposal_access_credentials (role,password_salt,password_hash,iterations) values\n"+
+   "('aimet','"+saltA+"','"+hashA+"',310000),\n"+
+   "('owner','"+saltO+"','"+hashO+"',310000)\n"+
+   "on conflict (role) do update set password_salt=excluded.password_salt,password_hash=excluded.password_hash,iterations=excluded.iterations,updated_at=now();\n"+
+   "delete from public.proposal_access_sessions;\n"+
+   "delete from public.proposal_login_attempts;";
+  document.getElementById("sql").value=sql;
+  document.getElementById("sql").classList.remove("hidden");
+  document.getElementById("copy").classList.remove("hidden");
+  document.getElementById("aimet").value="";document.getElementById("owner").value="";document.getElementById("owner2").value="";
+  status.textContent="Configuración generada localmente. Las contraseñas se han limpiado de los campos.";
+ }catch(err){status.textContent="No se pudo generar la configuración en este navegador."}
+ finally{button.disabled=false;button.textContent="GENERAR CONFIGURACIÓN SEGURA"}
+});
+document.getElementById("copy").addEventListener("click",async()=>{
+ const area=document.getElementById("sql");
+ try{await navigator.clipboard.writeText(area.value);document.getElementById("status").textContent="SQL copiado. Pégalo en el SQL Editor de Supabase."}
+ catch{area.focus();area.select();document.getElementById("status").textContent="Selecciona y copia el SQL manualmente."}
+});
+</script>
+</body>
+</html>
