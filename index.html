@@ -205,7 +205,7 @@ body.admin-mode .error{color:#f1a0b8}
   if(!response.ok)throw new Error(result.error||"No se pudo completar la operación.");
   return result;
  }
- function show(id){document.body.classList.toggle("admin-mode",id==="admin");document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.getElementById("backToAdmin").style.display=previewMode&&id!=="admin"&&id!=="login"?"block":"none";window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});}
+ function show(id){document.body.classList.toggle("admin-mode",id==="admin");document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));document.getElementById("backToAdmin").style.display=previewMode&&id!=="admin"&&id!=="login"?"block":"none";if(id!=="admin"&&!reduce)requestAnimationFrame(draw);window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});}
  function setError(id,message){document.getElementById(id).textContent=message||""}
  function startExperience(){previewMode=role==="owner";show("s0")}
  async function enterSession(sessionRole){
@@ -281,7 +281,7 @@ body.admin-mode .error{color:#f1a0b8}
    if(p.heart){ctx.font=(p.r*5+5)+"px sans-serif";ctx.fillText("♥",p.x,p.y)}
    else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
   }
-  ctx.globalAlpha=1;if(!reduce)requestAnimationFrame(draw)
+  ctx.globalAlpha=1;if(!reduce&&!document.body.classList.contains("admin-mode"))requestAnimationFrame(draw)
  }
  addEventListener("resize",resize,{passive:true});resize();if(!reduce)requestAnimationFrame(draw);else draw(0);
  restore();
