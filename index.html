@@ -7,48 +7,106 @@
 <meta name="description" content="Una experiencia especial preparada para Aimet.">
 <title>Una pregunta para Aimet</title>
 <style>
-:root{color-scheme:dark;--pink:#ff70c8;--hot:#ff2d9b;--mag:#d52cff;--red:#ff456f;--ink:#09030d;--muted:#d9b8d0}
+:root{color-scheme:dark;--pink:#ff70c8;--hot:#ff2d9b;--mag:#d52cff;--ink:#09030d;--muted:#d9b8d0}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--ink);font-family:ui-rounded,"SF Pro Display",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#fff}
 body{min-height:100svh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 42%,#35102d 0,#16091c 35%,#09030d 76%);-webkit-tap-highlight-color:transparent}
 #space{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,#050208aa 100%)}
-.app{position:relative;z-index:2;min-height:100svh;display:grid;place-items:center;padding:28px 20px calc(28px + env(safe-area-inset-bottom))}
-.screen{width:min(100%,540px);text-align:center;display:none;animation:arrive .9s cubic-bezier(.2,.75,.25,1) both}
+.app{position:relative;z-index:2;min-height:100svh;display:grid;place-items:center;padding:30px 20px calc(35px + env(safe-area-inset-bottom))}
+.screen{width:min(100%,560px);text-align:center;display:none;animation:arrive .8s cubic-bezier(.2,.75,.25,1) both}
 .screen.active{display:block}
-@keyframes arrive{from{opacity:0;transform:translateY(16px) scale(.985);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
-.preview-tag{position:fixed;z-index:5;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);padding:7px 12px;border:1px solid #ff70c855;border-radius:99px;background:#160a1dcc;color:#ffc4e8;font-size:10px;letter-spacing:.17em;text-transform:uppercase;backdrop-filter:blur(12px);white-space:nowrap}
+@keyframes arrive{from{opacity:0;transform:translateY(15px) scale(.987);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
 .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#f7a6dc;margin:0 0 17px}
 h1,h2,p{margin-top:0}h1{font-size:clamp(35px,9vw,62px);line-height:1.02;letter-spacing:-.045em;margin-bottom:17px;text-shadow:0 0 24px #ff3cac66}
 h2{font-size:clamp(28px,7vw,43px);line-height:1.12;letter-spacing:-.035em;margin-bottom:18px}
-p{font-size:clamp(15px,4vw,18px);line-height:1.75;color:var(--muted);max-width:440px;margin:0 auto 25px}
+p{font-size:clamp(15px,4vw,18px);line-height:1.75;color:var(--muted);max-width:450px;margin:0 auto 25px}
 .name{background:linear-gradient(100deg,#fff 5%,#ffb5e4 42%,#ff56b7 72%,#dca0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.heart-wrap{width:min(62vw,270px);aspect-ratio:1;margin:0 auto 28px;position:relative;display:grid;place-items:center}
+.heart-wrap{width:min(62vw,270px);aspect-ratio:1;margin:0 auto 26px;position:relative;display:grid;place-items:center}
 .heart-wrap:before,.heart-wrap:after{content:"";position:absolute;inset:12%;border:1px solid #ff5dbb55;border-radius:50%;box-shadow:0 0 28px #ff3cac33,inset 0 0 24px #ff3cac22;animation:orbit 8s linear infinite}
 .heart-wrap:after{inset:0;border-color:#d83cff44;animation-duration:13s;animation-direction:reverse}
 @keyframes orbit{to{transform:rotate(360deg)}}
 .heart{font-size:clamp(105px,28vw,170px);line-height:1;filter:drop-shadow(0 0 12px #ff399e) drop-shadow(0 0 32px #c52dff);animation:pulse 2.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(.96);filter:drop-shadow(0 0 12px #ff399e) drop-shadow(0 0 28px #c52dff)}50%{transform:scale(1.06);filter:drop-shadow(0 0 20px #ff399e) drop-shadow(0 0 48px #c52dff)}}
-.actions{display:flex;flex-direction:column;gap:12px;width:min(100%,350px);margin:28px auto 0}
-button{appearance:none;border:0;min-height:54px;border-radius:16px;padding:15px 22px;font:700 14px/1.2 system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:.08em;cursor:pointer;color:#fff;touch-action:manipulation;transition:transform .2s,filter .2s,box-shadow .2s}
-button:active{transform:scale(.975)}
+.actions{display:flex;flex-direction:column;gap:12px;width:min(100%,360px);margin:27px auto 0}
+button,input{font:inherit}
+button{appearance:none;border:0;min-height:54px;border-radius:16px;padding:15px 22px;font:700 13px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.08em;cursor:pointer;color:#fff;touch-action:manipulation;transition:transform .2s,filter .2s,box-shadow .2s}
+button:active{transform:scale(.975)}button:disabled{opacity:.55;cursor:wait}
 .primary{background:linear-gradient(100deg,#ff4eae,#dc32c5 55%,#a943ff);box-shadow:0 0 25px #ed36b955,0 8px 28px #0006}
 .secondary{background:#ffffff0b;border:1px solid #ff9bd455;color:#ffd4ed;backdrop-filter:blur(10px)}
+.choice{min-height:58px;font-size:13px}
 .small-note{font-size:11px;letter-spacing:.04em;color:#b98eaf;margin-top:19px}
 .line{height:1px;width:74px;margin:22px auto;background:linear-gradient(90deg,transparent,#ff73c9,transparent);box-shadow:0 0 12px #ff50bd}
-.choice{min-height:58px;font-size:13px}
 .result-mark{font-size:70px;filter:drop-shadow(0 0 24px #ff45ad);margin-bottom:12px}
 .result-copy{font-size:clamp(16px,4.5vw,19px)}
-.fade{animation:arrive 1s both}
 .footer{position:fixed;z-index:3;bottom:calc(10px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:10px;letter-spacing:.16em;color:#b98eaf88;pointer-events:none}
+.login-card,.admin-card{width:min(100%,480px);margin:auto;padding:28px 22px;border:1px solid #ff83ce35;border-radius:24px;background:linear-gradient(145deg,#251027dd,#100815eF);box-shadow:0 18px 70px #0008,0 0 35px #d62c7b18;backdrop-filter:blur(18px)}
+.login-mark{font-size:42px;margin-bottom:10px;filter:drop-shadow(0 0 18px #ff54b6)}
+.field{display:block;width:100%;min-height:52px;margin:10px 0 14px;padding:14px 15px;border:1px solid #ff9bd455;border-radius:13px;background:#09030dcc;color:#fff;outline:none;font-size:16px}
+.field:focus{border-color:#ff70c8;box-shadow:0 0 0 3px #ff70c822}
+.field-label{display:block;text-align:left;color:#e9c6dd;font-size:12px;letter-spacing:.08em;margin-top:18px}
+.error{min-height:22px;color:#ff9ebd;font-size:13px;line-height:1.5;margin:12px 0 0}
+.admin-card{width:min(100%,650px);text-align:left}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.admin-head h2{font-size:25px;margin:0}
+.admin-sub{font-size:13px;color:#caaac3;margin:5px 0 0}
+.section-title{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#f3a4d7;margin:23px 0 12px}
+.response{padding:14px;border:1px solid #ff8bc52b;border-radius:14px;background:#ffffff08;margin:9px 0}
+.response strong{display:block;font-size:14px;margin-bottom:5px}
+.response small{color:#caaac3}
+.empty{padding:18px;border:1px dashed #ff8bc544;border-radius:14px;color:#caaac3;text-align:center;font-size:13px}
+.admin-actions{display:flex;gap:9px;flex-wrap:wrap}
+.admin-actions button{min-height:42px;padding:11px 15px;font-size:11px}
+.notice{font-size:12px;line-height:1.6;color:#caaac3;margin:9px 0}
+@media(min-width:700px){.app{padding-top:55px;padding-bottom:55px}.actions{flex-direction:row}.actions button{flex:1}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
-@media(min-width:700px){.app{padding-top:58px;padding-bottom:58px}.actions{flex-direction:row}.actions button{flex:1}}
 </style>
 </head>
 <body>
 <canvas id="space" aria-hidden="true"></canvas><div class="vignette"></div>
-<div class="preview-tag">Vista de prueba · respuestas simuladas</div>
 <main class="app">
-<section class="screen active" id="s0">
+<section class="screen active" id="login">
+ <div class="login-card">
+  <div class="login-mark">♡</div>
+  <p class="eyebrow">Un espacio privado</p>
+  <h2>Una pequeña sorpresa<br><span class="name">te está esperando.</span></h2>
+  <p>Introduce la contraseña que recibiste para continuar.</p>
+  <form id="loginForm">
+   <label class="field-label" for="password">CONTRASEÑA DE ACCESO</label>
+   <input class="field" id="password" type="password" autocomplete="current-password" minlength="1" maxlength="256" required placeholder="Escribe tu contraseña">
+   <button class="primary" id="loginButton" type="submit" style="width:100%">ENTRAR <span aria-hidden="true">✦</span></button>
+   <div class="error" id="loginError" role="status" aria-live="polite"></div>
+  </form>
+  <div class="small-note">Acceso privado · Sesión protegida</div>
+ </div>
+</section>
+
+<section class="screen" id="admin">
+ <div class="admin-card">
+  <div class="admin-head">
+   <div><h2>Panel privado</h2><div class="admin-sub">Administración de la propuesta</div></div>
+   <div class="admin-actions"><button class="secondary" id="refreshResponses">ACTUALIZAR</button><button class="secondary" id="logoutAdmin">SALIR</button></div>
+  </div>
+  <div class="section-title">Respuestas de Aimet</div>
+  <div id="responses"><div class="empty">Cargando respuestas...</div></div>
+  <div class="section-title">Administrar contraseñas</div>
+  <p class="notice">Solo el propietario puede cambiar las contraseñas. La nueva contraseña debe tener al menos 12 caracteres. Aimet no verá esta sección.</p>
+  <form id="passwordForm">
+   <label class="field-label" for="passwordTarget">CUENTA</label>
+   <select class="field" id="passwordTarget"><option value="aimet">Acceso de Aimet</option><option value="owner">Mi acceso de propietario</option></select>
+   <label class="field-label" for="newPassword">NUEVA CONTRASEÑA</label>
+   <input class="field" id="newPassword" type="password" autocomplete="new-password" minlength="12" maxlength="256" required placeholder="Mínimo 12 caracteres">
+   <label class="field-label" for="confirmPassword">CONFIRMAR CONTRASEÑA</label>
+   <input class="field" id="confirmPassword" type="password" autocomplete="new-password" minlength="12" maxlength="256" required placeholder="Repite la contraseña">
+   <button class="primary" id="savePassword" type="submit" style="width:100%">GUARDAR CONTRASEÑA</button>
+   <div class="error" id="passwordMessage" role="status" aria-live="polite"></div>
+  </form>
+  <div class="section-title">Vista previa</div>
+  <p class="notice">Puedes revisar la experiencia sin enviar una respuesta real.</p>
+  <button class="secondary" id="previewExperience" style="width:100%">VER EXPERIENCIA</button>
+ </div>
+</section>
+
+<section class="screen" id="s0">
  <div class="heart-wrap"><div class="heart" aria-hidden="true">♡</div></div>
  <p class="eyebrow">Una pequeña sorpresa</p>
  <h1>Hay algo que<br><span class="name">quiero contarte...</span></h1>
@@ -84,6 +142,7 @@ button:active{transform:scale(.975)}
   <button class="secondary choice" data-answer="think">NECESITO PENSARLO</button>
  </div>
  <div class="small-note">Cualquiera que sea tu respuesta, será respetada.</div>
+ <div class="error" id="answerError" role="status" aria-live="polite"></div>
 </section>
 <section class="screen" id="yes">
  <div class="result-mark">💖</div><p class="eyebrow">Un nuevo comienzo</p>
@@ -103,18 +162,102 @@ button:active{transform:scale(.975)}
 <div class="footer">HECHO CON CARIÑO · PARA AIMET</div>
 <script>
 (()=> {
- const demo=true;
- const canvas=document.getElementById('space'),ctx=canvas.getContext('2d');
- let w=0,h=0,dpr=1,particles=[],raf=0;
- const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- function resize(){dpr=Math.min(window.devicePixelRatio||1,1.6);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const count=Math.min(75,Math.max(28,Math.floor(w*h/11500)));particles=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2+0.5,v:Math.random()*.32+.08,a:Math.random()*.55+.15,phase:Math.random()*6.28,heart:Math.random()<.16}));}
- function draw(t){ctx.clearRect(0,0,w,h);for(const p of particles){p.y-=p.v;if(p.y<-12){p.y=h+12;p.x=Math.random()*w}const alpha=p.a*(.65+.35*Math.sin(t*.001+p.phase));ctx.globalAlpha=alpha;ctx.fillStyle=p.heart?'#ff72c8':'#f7b5e8';if(p.heart){ctx.font=(p.r*5+5)+'px sans-serif';ctx.fillText('♥',p.x,p.y)}else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}}ctx.globalAlpha=1;if(!reduce)raf=requestAnimationFrame(draw)}
- function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});}
- document.querySelectorAll('[data-next]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.next)));
- document.querySelectorAll('[data-answer]').forEach(b=>b.addEventListener('click',()=>{if(!demo)return;show(b.dataset.answer==='yes'?'yes':'think');}));
- document.querySelectorAll('[data-restart]').forEach(b=>b.addEventListener('click',()=>show('s0')));
- addEventListener('resize',resize,{passive:true});resize();if(!reduce)raf=requestAnimationFrame(draw);else draw(0);
- // PREVIEW ONLY: no response is sent, stored, or exposed to an administrator.
+ const API_URL="https://ytjdrolazyuilchzwejo.supabase.co/functions/v1/proposal-access";
+ const API_KEY="sb_publishable_7N2JcX8AVfGRzbsJDDvsDg_HoqWVzq6";
+ const SESSION_KEY="aimet_proposal_session_v1";
+ const canvas=document.getElementById("space"),ctx=canvas.getContext("2d");
+ let w=0,h=0,particles=[],role=null,previewMode=false;
+ const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const token=()=>{try{return localStorage.getItem(SESSION_KEY)||""}catch{return ""}};
+ const saveToken=v=>{try{localStorage.setItem(SESSION_KEY,v)}catch{}};
+ const clearToken=()=>{try{localStorage.removeItem(SESSION_KEY)}catch{}};
+ async function api(action,data={},auth=true){
+  const headers={"Content-Type":"application/json","apikey":API_KEY};
+  if(auth&&token())headers.Authorization="Bearer "+token();
+  const response=await fetch(API_URL,{method:"POST",headers,body:JSON.stringify({action,...data})});
+  let result={};try{result=await response.json()}catch{}
+  if(!response.ok)throw new Error(result.error||"No se pudo completar la operación.");
+  return result;
+ }
+ function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});}
+ function setError(id,message){document.getElementById(id).textContent=message||""}
+ function startExperience(){previewMode=role==="owner";show("s0")}
+ async function enterSession(sessionRole){
+  role=sessionRole;
+  if(role==="owner"){await loadResponses();show("admin")}
+  else {previewMode=false;show("s0")}
+ }
+ async function loadResponses(){
+  const host=document.getElementById("responses");host.innerHTML='<div class="empty">Cargando respuestas...</div>';
+  try{
+   const data=await api("list-responses");
+   if(!data.responses.length){host.innerHTML='<div class="empty">Todavía no hay respuestas registradas.</div>';return}
+   host.innerHTML=data.responses.map(item=>{
+    const label=item.answer==="yes"?"Respondió que sí 💗":"Necesita pensarlo ♡";
+    const date=new Date(item.created_at).toLocaleString("es-ES",{dateStyle:"medium",timeStyle:"short"});
+    return '<div class="response"><strong>'+label+'</strong><small>'+date+'</small></div>';
+   }).join("");
+  }catch(e){host.innerHTML='<div class="empty">'+escapeHtml(e.message)+'</div>'}
+ }
+ function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+ document.getElementById("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();const button=document.getElementById("loginButton"),password=document.getElementById("password").value;
+  setError("loginError","");button.disabled=true;button.textContent="VERIFICANDO...";
+  try{const result=await api("login",{password},false);saveToken(result.session.token);await enterSession(result.session.role);document.getElementById("password").value=""}
+  catch(err){setError("loginError",err.message)}
+  finally{button.disabled=false;button.innerHTML='ENTRAR <span aria-hidden="true">✦</span>'}
+ });
+ document.querySelectorAll("[data-next]").forEach(button=>button.addEventListener("click",()=>show(button.dataset.next)));
+ document.querySelectorAll("[data-answer]").forEach(button=>button.addEventListener("click",async()=>{
+  const answer=button.dataset.answer;setError("answerError","");
+  if(previewMode){show(answer==="yes"?"yes":"think");return}
+  const buttons=[...document.querySelectorAll("[data-answer]")];buttons.forEach(b=>b.disabled=true);button.textContent="ENVIANDO...";
+  try{await api("submit-response",{answer});show(answer==="yes"?"yes":"think")}
+  catch(err){setError("answerError",err.message);buttons.forEach(b=>b.disabled=false);button.textContent=answer==="yes"?"SÍ, QUIERO 💗":"NECESITO PENSARLO"}
+ }));
+ document.querySelectorAll("[data-restart]").forEach(button=>button.addEventListener("click",()=>show("s0")));
+ document.getElementById("refreshResponses").addEventListener("click",loadResponses);
+ document.getElementById("logoutAdmin").addEventListener("click",logout);
+ async function logout(){try{await api("logout")}catch{}clearToken();role=null;previewMode=false;show("login")}
+ document.getElementById("previewExperience").addEventListener("click",startExperience);
+ document.getElementById("passwordForm").addEventListener("submit",async e=>{
+  e.preventDefault();const target=document.getElementById("passwordTarget").value;
+  const password=document.getElementById("newPassword").value,confirm=document.getElementById("confirmPassword").value;
+  setError("passwordMessage","");
+  if(password!==confirm){setError("passwordMessage","Las contraseñas no coinciden.");return}
+  if(password.length<12){setError("passwordMessage","Usa al menos 12 caracteres.");return}
+  const button=document.getElementById("savePassword");button.disabled=true;button.textContent="GUARDANDO...";
+  try{
+   await api("change-password",{target,newPassword:password});
+   document.getElementById("newPassword").value="";document.getElementById("confirmPassword").value="";
+   setError("passwordMessage","Contraseña actualizada correctamente.");
+   if(target==="owner"){clearToken();role=null;setTimeout(()=>show("login"),1100)}
+  }catch(err){setError("passwordMessage",err.message)}
+  finally{button.disabled=false;button.textContent="GUARDAR CONTRASEÑA"}
+ });
+ async function restore(){
+  if(!token())return;
+  try{const data=await api("session");await enterSession(data.role)}
+  catch{clearToken()}
+ }
+ function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;
+  canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);canvas.style.width=w+"px";canvas.style.height=h+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const count=Math.min(62,Math.max(24,Math.floor(w*h/14500)));
+  particles=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.7+.5,v:Math.random()*.28+.07,a:Math.random()*.5+.15,phase:Math.random()*6.28,heart:Math.random()<.12}));
+ }
+ function draw(t){
+  ctx.clearRect(0,0,w,h);
+  for(const p of particles){p.y-=p.v;if(p.y<-12){p.y=h+12;p.x=Math.random()*w}
+   ctx.globalAlpha=p.a*(.65+.35*Math.sin(t*.001+p.phase));ctx.fillStyle=p.heart?"#ff72c8":"#f7b5e8";
+   if(p.heart){ctx.font=(p.r*5+5)+"px sans-serif";ctx.fillText("♥",p.x,p.y)}
+   else{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
+  }
+  ctx.globalAlpha=1;if(!reduce)requestAnimationFrame(draw)
+ }
+ addEventListener("resize",resize,{passive:true});resize();if(!reduce)requestAnimationFrame(draw);else draw(0);
+ restore();
 })();
 </script>
 </body>
